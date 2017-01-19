@@ -1,4 +1,4 @@
-from .java import Segmenter
+from .java import Segmenter, conv2cn, conv2tw
 from pkg_resources import get_distribution, DistributionNotFound
 
 try:
@@ -6,4 +6,4 @@ try:
 except DistributionNotFound:
     __version__ = 'Undefined'
 
-__all__ = ['__version__', 'Segmenter']
+__all__ = ['__version__', 'Segmenter', 'conv2cn', 'conv2tw']
