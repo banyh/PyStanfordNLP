@@ -44,7 +44,7 @@ class Compile(install):
 
 
 setup(name='stanford_wrapper',
-      version='0.2.1',
+      version='0.3.0',
       description='Wrapping Stanford NLP as Python Packages',
       url='https://github.com/banyh/PyStanfordNLP',
       author='Ping Chu Hung',
@@ -61,4 +61,5 @@ setup(name='stanford_wrapper',
       },
       test_suite='nose.collector',
       tests_require=['nose'],
-      include_package_data=True,)
+      include_package_data=True,
+      package_data={'stanford_segmenter': ['dict.set']})
