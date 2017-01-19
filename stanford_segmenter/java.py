@@ -1,4 +1,4 @@
-from jpype import startJVM, getDefaultJVMPath, shutdownJVM, java, JPackage, JString
+from jpype import startJVM, getDefaultJVMPath, shutdownJVM, java, JPackage
 from os.path import join, dirname
 from platform import system
 
