@@ -1,4 +1,4 @@
-from jpype import startJVM, getDefaultJVMPath, shutdownJVM, java, JPackage
+from jpype import startJVM, getDefaultJVMPath, shutdownJVM, java, JPackage, isJVMStarted
 from os.path import join, dirname
 from platform import system
 
@@ -10,10 +10,13 @@ class Postagger(object):
         else:
             sep = ';'  # Windows
         pwd = dirname(__file__)
-        main_dir = join(pwd, 'stanford-postagger-full-2015-12-09')
-        startJVM(getDefaultJVMPath(), "-ea", "-Djava.class.path=" +
-                sep.join([main_dir, join(main_dir, 'stanford-postagger.jar'),
-                join(main_dir, 'lib', 'slf4j-api.jar'), join(main_dir, 'lib', 'slf4j-simple.jar')]))
+        main_dir = join(pwd, 'pos')
+        if not isJVMStarted():
+            startJVM(getDefaultJVMPath(), "-ea", "-Djava.class.path=" +
+                     sep.join([main_dir, join(main_dir, 'stanford-postagger.jar'),
+                     join(pwd, '..', 'stanford_segmenter', 'seg'),
+                     join(pwd, '..', 'stanford_segmenter', 'seg', 'stanford-segmenter-3.6.0.jar'),
+                     join(main_dir, 'lib', 'slf4j-api.jar'), join(main_dir, 'lib', 'slf4j-simple.jar')]))
         # --------- for debugging -----------
         print('JVM classpath:')
         cl = java.lang.ClassLoader.getSystemClassLoader()
@@ -33,9 +36,6 @@ class Postagger(object):
             self.postagger = maxent.MaxentTagger('models/spanish-distsim.tagger')
         else:
             raise ValueError('Not Support Language: {}'.format(lang))
-
-    def __del__(self):
-        shutdownJVM()
 
     def postag(self, segmented_sent):
         return self.postagger.tagTokenizedString(segmented_sent)
