@@ -20,7 +20,7 @@ class Segmenter(object):
         pwd = dirname(__file__)
         main_dir = join(pwd, 'seg')
         if not isJVMStarted():
-            startJVM(getDefaultJVMPath(), "-ea", "-Djava.class.path=" +
+            startJVM(getDefaultJVMPath(), "-Xmx2048M", "-ea", "-Djava.class.path=" +
                      sep.join([main_dir, join(main_dir, 'stanford-segmenter-3.6.0.jar'),
                      join(pwd, '..', 'stanford_postagger', 'pos'),
                      join(pwd, '..', 'stanford_postagger', 'pos', 'stanford-postagger.jar'),

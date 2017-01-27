@@ -1,4 +1,4 @@
-from __future__ import unicode_literals, print_function
+from __future__ import print_function
 from setuptools import setup
 from setuptools.command.install import install
 from os.path import join, dirname, isfile, isdir
