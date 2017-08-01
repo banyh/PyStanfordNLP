@@ -44,7 +44,7 @@ class Compile(install):
 
 
 setup(name='stanford_wrapper',
-      version='0.3.2',
+      version='0.3.3',
       description='Wrapping Stanford NLP as Python Packages',
       url='https://github.com/banyh/PyStanfordNLP',
       author='Ping Chu Hung',
