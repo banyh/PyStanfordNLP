@@ -7,10 +7,10 @@ class Conv2Cn(object):
         from ._conv2cn_data import trad, simp, phrase_table
         self.one_char = dict((ord(t), ord(s)) for t, s in zip(trad, simp))
 
-        num_char = max([len(trad) for trad, simp in phrase_table])
+        num_char = max([len(t) for t, _ in phrase_table])
         phrases = [list() for i in range(num_char + 1)]
-        for trad, simp in phrase_table:
-            phrases[len(trad)].append((trad, simp))
+        for t, s in phrase_table:
+            phrases[len(t)].append((t, s))
 
         patterns = []
         tables = []
