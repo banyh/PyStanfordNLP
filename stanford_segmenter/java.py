@@ -4,6 +4,7 @@ from jpype import startJVM, getDefaultJVMPath, shutdownJVM, java, JPackage, isJV
 from os.path import join, dirname
 from platform import system
 import pickle
+import re
 from .conv2cn import Conv2Cn as _Conv2Cn
 from .conv2tw import Conv2Tw as _Conv2Tw
 
@@ -89,8 +90,10 @@ class Segmenter(object):
         return out
 
     def cn_segment(self, cn_text):
-        original = cn_text
-        segmented = ' '.join(self._cn_segment(cn_text))
+        original = re.sub('([0-9])([一二三四五六七八九十])', '\\1 \\2', cn_text)
+        original = re.sub('([0-9])([百千][^萬億兆])', '\\1 \\2', original)
+        original = re.sub('([一二三四五六七八九十百千萬億兆])([0-9])', '\\1 \\2', original)
+        segmented = self._cn_segment(cn_text)
         if segmented is None:
             return None
         err_word = []
@@ -111,7 +114,8 @@ class Segmenter(object):
 
     def tw_segment(self, tw_text):
         cn_text = conv2cn(tw_text)
-        tw_text = tw_text.replace('\r', '').replace('\n', '').replace(' ', '')
+        fullwidth_space = [i for i, ch in enumerate(cn_text) if ch == '　']
+        tw_text = tw_text.replace('\r', '').replace('\n', '').replace(' ', '').replace(u'　', '')
         cn_seg = self.cn_segment(cn_text)
         if cn_seg is None:
             return None
@@ -121,4 +125,7 @@ class Segmenter(object):
         for wl in tlen:
             tw_seg.append(tw_text[i:(i + wl)])
             i += wl
+            if len(fullwidth_space) > 0 and i == fullwidth_space[0]:
+                tw_seg.append('　')
+                fullwidth_space.pop(0)
         return tw_seg
